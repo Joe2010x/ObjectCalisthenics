@@ -119,19 +119,19 @@ namespace Calisthenics.Tests
             //act
             var result = commodore64.Interpret();
             //assert
-            result.Should().Be("20");
+            result.Should().Be("9");
             
         }
         [Fact]
         public void interpret_should_handle_simple_assignment()
         {
             //arrange
-            var input = "A=12\nPRINT A";
+            var input = "A=12\nC=20\nPRINT C";
             var commodore64 = new Commodore64(input);
             //act
             var result = commodore64.Interpret();
             //assert
-            result.Should().Be("12");
+            result.Should().Be("20");
             
         }
 
@@ -139,15 +139,41 @@ namespace Calisthenics.Tests
         public void interpret_should_handle_simple_assignment_should_return_12()
         {
             //arrange
-            var input = "A=12";
+            var input = "A=12\nC=20\nPRINT C";
             //var commodore64 = new Commodore64(input);
             var printItems = new PrintItems(input);
             //act
             //var result = commodore64.Interpret();
 
             //assert
-            printItems.variable["A"].Should().Be(12);
+            printItems.variable[0][0].Should().Be("A");
             
+        }
+
+        [Fact]
+        public void interpret_should_handle_multiple_assignment_should_return_12()
+        {
+            //arrange
+            var input = "A=2\nB=7\nPRINT A + 1\nPRINT A + B\nPRINT 99 + B";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+
+            //assert
+            result.Should().Be("3\n9\n106");
+            
+        }
+
+          [Fact]
+        public void interpret_should_work_with_bracket()
+        {
+            //arrange
+            var input = "PRINT 1 - (2 + 3)";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-4");
         }
     }
 }

@@ -6,10 +6,12 @@ namespace Calisthenics.Models
     public class PrintItems
     {
         public List<PrintItem> items;
-        public Dictionary<string,int> variable;
+        public List<string[]> variable;
 
         public PrintItems(string input)
         {
+
+            variable = new List<string[]>();
             items = ConvertToList(input);
         }
 
@@ -19,10 +21,16 @@ namespace Calisthenics.Models
 
             foreach(var line in inputToConvert.Split("\n"))
             {
-                var printItem = new PrintItem(line,variable);
+                if (line.Contains("PRINT"))
+                {
+                    var printItem = new PrintItem(line,variable);
 
-                result.Add(printItem);
-                //variable = printItem.GetVariable();
+                    result.Add(printItem);  
+                }
+                else {
+                    var spliteLine = line.Split("=",StringSplitOptions.TrimEntries);
+                    variable.Add(new string[] {spliteLine[0],spliteLine[1]});
+                }
             }
             return result;
         }
@@ -32,7 +40,6 @@ namespace Calisthenics.Models
             var result = "";
             foreach(var content in items)
             {
-                if (!content.content.Contains("AssignmentExpression"))
                 result += content.content + "\n";
             }
 
