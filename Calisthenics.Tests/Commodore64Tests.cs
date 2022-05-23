@@ -71,5 +71,55 @@ namespace Calisthenics.Tests
             result.Should().Be("123");
             
         }
+
+         [Fact]
+        public void interpret_should_return_numeric_string_minus_3()
+        {
+            //arrange
+            var input = "PRINT -3";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-3");
+            
+        } 
+        
+        [Fact]
+        public void interpret_should_add_numbers()
+        {
+            //arrange
+            var input = "PRINT 3 + 7";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("10");
+            
+        }
+          [Fact]
+        public void interpret_should_add_multiple_numbers()
+        {
+            //arrange
+            var input = "PRINT 4 + 4 + 12";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("20");
+            
+        }
+        [Fact]
+        public void interpret_should_handle_simple_assignment()
+        {
+            //arrange
+            var input = "A=12\nPRINT A";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("12");
+            
+        }
     }
 }

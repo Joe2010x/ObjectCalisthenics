@@ -6,6 +6,7 @@ namespace Calisthenics.Models
     public class PrintItems
     {
         public List<PrintItem> items;
+        public Dictionary<string,int> variable;
 
         public PrintItems(string input)
         {
@@ -18,9 +19,10 @@ namespace Calisthenics.Models
 
             foreach(var line in inputToConvert.Split("\n"))
             {
-                var printItem = new PrintItem(line);
+                var printItem = new PrintItem(line,variable);
 
                 result.Add(printItem);
+                variable = printItem.GetVariable();
             }
             return result;
         }
