@@ -58,5 +58,18 @@ namespace Calisthenics.Tests
             //assert
             result.Should().Be("Hi\nThere\n!");
         }
+
+        [Fact]
+        public void interpret_should_return_numeric_string()
+        {
+            //arrange
+            var input = "PRINT 123";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("123");
+            
+        }
     }
 }

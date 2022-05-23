@@ -106,6 +106,8 @@ We are to develop an interpreter for (something similar to) Commodore 64 BASIC. 
 
   output:
   123
+
+  input:
   PRINT -3
 
   output:

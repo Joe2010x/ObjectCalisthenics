@@ -11,15 +11,34 @@ namespace Calisthenics.Models
             content = Handle(input);
         }
 
-        private string Handle(string input)
+        public string Handle(string input)
         {
-            if(input.Length == 5)
+            if (input.Length == 5)
             {
-                return "";
+                return "\n";
             }
-            var output = input.Substring(7, input.Length - 8);
 
-            return output;
+            if(input.Contains('"'))
+            {
+                var output = input.Substring(7, input.Length - 8);
+
+                return output;
+            }
+
+            return HandlesDigits(input);
+        }
+
+        private string HandlesDigits(string input)
+        {
+            var temp = "";
+            foreach (var character in input)
+            {
+                if (Char.IsDigit(character))
+                {
+                    temp += character;
+                }
+            }
+            return temp;
         }
     }
 }
