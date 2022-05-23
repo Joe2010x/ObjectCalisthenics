@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using FluentAssertions;
+using Calisthenics.Models;
 
 namespace Calisthenics.Tests
 {
@@ -110,6 +111,18 @@ namespace Calisthenics.Tests
             
         }
         [Fact]
+        public void interpret_should_add_multiple_and_substract_numbers()
+        {
+            //arrange
+            var input = "PRINT 1 - 4 + 12";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("20");
+            
+        }
+        [Fact]
         public void interpret_should_handle_simple_assignment()
         {
             //arrange
@@ -119,6 +132,21 @@ namespace Calisthenics.Tests
             var result = commodore64.Interpret();
             //assert
             result.Should().Be("12");
+            
+        }
+
+         [Fact]
+        public void interpret_should_handle_simple_assignment_should_return_12()
+        {
+            //arrange
+            var input = "A=12";
+            //var commodore64 = new Commodore64(input);
+            var printItems = new PrintItems(input);
+            //act
+            //var result = commodore64.Interpret();
+
+            //assert
+            printItems.variable["A"].Should().Be(12);
             
         }
     }

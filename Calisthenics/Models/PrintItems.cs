@@ -22,7 +22,7 @@ namespace Calisthenics.Models
                 var printItem = new PrintItem(line,variable);
 
                 result.Add(printItem);
-                variable = printItem.GetVariable();
+                //variable = printItem.GetVariable();
             }
             return result;
         }
@@ -32,6 +32,7 @@ namespace Calisthenics.Models
             var result = "";
             foreach(var content in items)
             {
+                if (!content.content.Contains("AssignmentExpression"))
                 result += content.content + "\n";
             }
 

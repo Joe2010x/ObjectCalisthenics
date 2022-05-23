@@ -10,23 +10,23 @@ namespace Calisthenics.Models
         public string key;
         public int value;
 
-        private Dictionary<string,int> _variable {get; set;}
+        public Dictionary<string,int> variable {get; set;}
 
-        public PrintItem(string input,Dictionary<string,int> variable)
+        public PrintItem(string input,Dictionary<string,int> inputVariable)
         {
             content = Handle(input);
-            _variable = variable;
+            variable = inputVariable;
         }
 
         public Dictionary<string,int> GetVariable()
         {
-            return _variable;
+            return variable;
         }
 
         public string Handle(string input)
         {
             // handle with "PRINT"
-            if (input.Substring(0,5).Equals("PRINT"))
+            if (input.Contains("PRINT"))
             {
                 //handle empty input
                 if (input.Length == 5) return "\n";
@@ -37,17 +37,19 @@ namespace Calisthenics.Models
 
             // handle assignment, i.e. A=12
                 if (input.Contains('='))
-                    return HandleAssignment(input.Split('=',StringSplitOptions.TrimEntries));
+                    return "AssignmentExpression";
+
                 return input;
 
             }
         }
 
-        public string HandleAssignment(string[] input)
-        {
-            _variable.Add(input[0],int.Parse(input[1]));
-            return "AssignmentExpression";
-        }
+        // public string HandleAssignment(string[] input)
+        // {
+        //    //variable.Add(input[0],int.Parse(input[1]));
+        //     variable.Add("A",13);
+        //     return "AssignmentExpression";
+        // }
 
 
         public string HandleWithPrint(string printInput)
@@ -63,18 +65,16 @@ namespace Calisthenics.Models
 
             
             //Handle multiple plus
-            if (printInput.Contains("+"))
-                return HandleMultipleSum(printInput.Split('+',StringSplitOptions.TrimEntries));
+            return HandleMultipleSum(printInput.Split('+',StringSplitOptions.TrimEntries).ToList());
             
             //Hanle single variable
-            Console.WriteLine(printInput);
-            return _variable[printInput].ToString();
+            
 
             //return printInput;
 
         }
 
-        private string HandleMultipleSum(string[] multipleFactors)
+        private string HandleMultipleSum(List<string> multipleFactors)
         {
             var sum = 0;
             foreach (var factor in multipleFactors)
@@ -85,7 +85,11 @@ namespace Calisthenics.Models
                 } 
                 else 
                 {
-                    sum += _variable[factor];
+                    if (factor.Contains("-"))
+                        {
+                            var substractionArray = factor.Split("-",StringSplitOptions.TrimEntries).ToList();
+                            sum = sum+ int.Parse(substractionArray[0]) - int.Parse(HandleMultipleSum(substractionArray.RemoveAt(0)));
+                        }
                 }
             }
             return sum.ToString();
