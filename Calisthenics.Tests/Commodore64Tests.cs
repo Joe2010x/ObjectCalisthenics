@@ -51,7 +51,7 @@ namespace Calisthenics.Tests
         public void interpret_should_handle_sequence_of_input()
         {
             //arrange
-            var input = @"PRINT ""Hi""\nPRINT ""There""\nPRINT ""!""";
+            var input = "PRINT \"Hi\"\nPRINT \"There\"\nPRINT \"!\"";
             var commodore64 = new Commodore64(input);
             //act
             var result = commodore64.Interpret();

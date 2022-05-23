@@ -15,22 +15,11 @@ namespace Calisthenics
         {
             if(_input.body != null && _input.body.Contains("PRINT"))
             {
-                var printItem = new PrintItem(_input.body);
-                return printItem.content;
+                var printItems = new PrintItems(_input.body);
+                return printItems.ToString();
             }
 
             return null;
-        }
-
-        public string HandlePrint(string input)
-        {
-            if (input.Length == 5)
-            {
-                return "\n";
-            }
-
-            var output = input.Substring(7, input.Length - 8);
-            return output;
         }
     }
 }

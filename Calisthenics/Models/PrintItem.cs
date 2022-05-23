@@ -13,7 +13,13 @@ namespace Calisthenics.Models
 
         private string Handle(string input)
         {
-            return input;
+            if(input.Length == 5)
+            {
+                return "";
+            }
+            var output = input.Substring(7, input.Length - 8);
+
+            return output;
         }
     }
 }
