@@ -6,7 +6,7 @@ namespace Calisthenics.Models
     public class PrintItems
     {
         public List<PrintItem> items;
-        public List<string[]> variable;
+        public List<string[]> variable= new List<string[]>();
 
         public PrintItems(string input)
         {

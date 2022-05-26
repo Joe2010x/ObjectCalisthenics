@@ -126,7 +126,7 @@ namespace Calisthenics.Tests
         public void interpret_should_handle_simple_assignment()
         {
             //arrange
-            var input = "A=12\nC=20\nPRINT C";
+            var input = "A=12\nC=20\nPRINT D";
             var commodore64 = new Commodore64(input);
             //act
             var result = commodore64.Interpret();
@@ -164,16 +164,97 @@ namespace Calisthenics.Tests
             
         }
 
-          [Fact]
-        public void interpret_should_work_with_bracket()
+        [Fact]
+        public void interpret_should_work_with_bracket_100()
         {
             //arrange
-            var input = "PRINT 1 - (2 + 3)";
+            var input = "PRINT  (123 -100 )-(8-5)+80";
             var commodore64 = new Commodore64(input);
             //act
             var result = commodore64.Interpret();
             //assert
-            result.Should().Be("-4");
+            result.Should().Be("100");
+        }
+        [Fact]
+        public void interpret_should_work_with_bracket_1x0()
+        {
+            //arrange
+            var input = "PRINT  346-314-(9-7)+270+(52-403)";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-100");
+        }
+
+         [Fact]
+        public void interpret_should_work_with_bracket_3()
+        {
+            //arrange
+            var input = "PRINT  -(8 - 5)";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-3");
+        }
+
+         [Fact]
+        public void interpret_should_work_with_bracke_3()
+        {
+            //arrange
+            var input = "PRINT  (8 - 5)";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("3");
+        }
+
+         [Fact]
+        public void interpret_should_work_with_bracket_positive_3()
+        {
+            //arrange
+            var input = "PRINT  3";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("3");
+        }
+
+         [Fact]
+        public void interpret_should_work_with_bracke_negative_3()
+        {
+            //arrange
+            var input = "PRINT  -3";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-3");
+        }
+         [Fact]
+        public void interpret_should_work_with_bracke_positive_13()
+        {
+            //arrange
+            var input = "PRINT  10+3";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("13");
+        }
+         [Fact]
+        public void interpret_should_work_with_bracke_negative_13()
+        {
+            //arrange
+            var input = "PRINT  0-13";
+            var commodore64 = new Commodore64(input);
+            //act
+            var result = commodore64.Interpret();
+            //assert
+            result.Should().Be("-13");
         }
     }
 }

@@ -45,92 +45,74 @@ namespace Calisthenics.Models
             if (int.TryParse(printInput,out var num))
                 return num.ToString();
 
-            //Handle multiple plus
-            if (printInput.IndexOfAny(new char[] {'+','-','(',')'} ) != -1)
-                return HandleNumericalSum(printInput).ToString();
-            
-            //Handle one variable
-            if (variable!=null)
-            {
-                 if (variable.Find(v => v[0] == printInput).FirstOrDefault()!=null)
-                return variable.Find(v => v[0] == printInput)[1].ToString();
-            }
-              
-            //Hanle single variable
-        
-            return printInput;
+            //Handle multiple plus 
+            //Hanle single variable        
+            return HandleNumericalSum(printInput).ToString();
 
         }
         public int HandleNumericalSum(string input)
         {
-            input = input.Replace(" ", String.Empty);
-            var operators = new char[] {'+','-','(',')'};
 
+            input = input.Replace(" ", String.Empty);
+
+            // handle empty input
             if (input.Length==0) return 0;
 
+            var operators = new char[] {'+','-','(',')'};
 
-            // handle ()
-            var leftBracketIndex = input.IndexOf(operators[2]);
-            if (leftBracketIndex != -1)
-                {
-                    var rightBracketIndex = input.IndexOf(operators[3]);
-                    if (leftBracketIndex!=0)
-                        {
-                            var leftOperator = (input.Substring(0,leftBracketIndex-1));
-                            var operatorSymbol = input.Substring(leftBracketIndex-1,1);
-                            var bracketContent = (input.Substring(leftBracketIndex+1,rightBracketIndex-leftBracketIndex-1));
-                            if (operatorSymbol=="+")
-                                {
-                                    return HandleNumericalSum(leftOperator) + HandleNumericalSum(bracketContent);
-                                }
-                                else 
-                                {
-                                    return HandleNumericalSum(leftOperator) - HandleNumericalSum(bracketContent);
-                                }
-                        }
-                         
-                }
-            
+            // handle +
+            if (input[0]== operators[0])
+                return HandleNumericalSum(input.Substring(1,input.Length-1));
 
-            // handle + -
-            var plusSymbolPosition = input.IndexOf("+");
+            // handle -
+            if (input[0]== operators[1])           
+                return - HandleNumericalSum(FirstElement(input.Substring(1,input.Length-1))) + HandleNumericalSum(RestOfInput(input.Substring(1,input.Length-1)));
 
-            var minusSymbolPosition = input.IndexOf("-");
-
-            if (plusSymbolPosition==-1 && minusSymbolPosition==-1)
-            {
-
-                //return int.Parse(input);
+            // handle with number and variable
+            if (input.IndexOfAny(operators) == -1)
                 if (int.TryParse(input,out var num))
-                {
                     return num;
-                }
-                else {
-                     if (variable!=null)
-            {
-                 if (variable.Find(v => v[0] == input).FirstOrDefault()!=null)
-                return int.Parse(variable.Find(v => v[0] == input)[1]);
-            }
-                }
-
-            }
-            
-            if (plusSymbolPosition!=-1)
-                {
-                    return HandleNumericalSum(input.Substring(0,plusSymbolPosition))+ HandleNumericalSum(input.Substring(plusSymbolPosition+1,input.Length-1-plusSymbolPosition));
-                }
-                else {
-                    return HandleNumericalSum(input.Substring(0,minusSymbolPosition))-HandleNumericalSum(input.Substring(minusSymbolPosition+1,input.Length-minusSymbolPosition-1)) ;
-                }
-
+                else    
+                    return GetValue(input, variable);
+            else 
+                return HandleNumericalSum(FirstElement(input)) + HandleNumericalSum(RestOfInput(input));            
         }
 
-        private string HandleMultipleSum(List<string> multipleFactors)
+        private string RestOfInput(string input)
         {
-            var sum = 0;
-            
-            return sum.ToString();
+            if (input.Length == 0) return "";
+            var startIndex = input.IndexOfAny(new char[] {'-','+'}) ;
+            if (input[0]=='(')
+                startIndex = input.IndexOf(')') + 1;
+            if (startIndex == -1 ) return "";
+            return input.Substring(startIndex,input.Length-startIndex);
         }
+
+        private string FirstElement(string input)
+        {
+            if (input.Length == 0) return "";
+            var endIndex = input.IndexOfAny(new char[] {'-','+'});
+            if (input[0]=='(')
+            {
+                endIndex = input.IndexOf(')') ;
+                return input.Substring(1,endIndex-1);
+            }                    
+            if (endIndex == -1 ) return input;
+            return input.Substring(0,endIndex);
+        }
+
+        private int GetValue(string input, List<string[]> variable)
+        {
+            //throw new NotImplementedException();
+
+            var result = variable.Where(v => v[0] == input).FirstOrDefault();
+
+            if (result== null)
+                return 0;
+            
+            return int.Parse(result[1]);
+        }
+
 
     }
 }
